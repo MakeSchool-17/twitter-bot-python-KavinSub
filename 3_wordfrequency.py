@@ -33,6 +33,23 @@ def frequency(histogram, word):
     return histogram[word]
 
 if __name__ == '__main__':
-    freq_dict = histogram("text_files/MobyDick.txt")
-    for key in freq_dict.keys():
-        print("{} {}".format(key, freq_dict[key]))
+    time_100 = 0
+    time_1000 = 0
+    trials = 10000
+
+    source_text = "text_files/" + sys.argv[1]
+    word = "fish"
+    if len(sys.argv) >= 3:
+        word = sys.argv[2]
+
+    histogram = histogram(source_text)
+    time_start = time.clock()
+    for i in range(trials):
+        if i == 99:
+            time_100 = time.clock()
+
+        frequency(histogram, word)
+
+    time_1000 = time.clock()
+
+    print("100 trials -> %.3f seconds\n%d trials -> %.3f seconds" % (time_100 - time_start, trials, time_1000 - time_start))

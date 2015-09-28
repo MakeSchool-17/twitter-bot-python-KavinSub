@@ -51,7 +51,7 @@ def random_trials(trials, histogram):
 
 if __name__ == '__main__':
     time_start = time.clock()
-    trials = 1000000
+    trials = 1000
 
     source_text = "text_files/" + sys.argv[1]
 
