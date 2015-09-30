@@ -72,6 +72,15 @@ class LinkedList:
                 print("{}: {}".format(current.key, current.data))
             current = current.next
 
+    # Returns a list of pairs (key, value)
+    def get_values(self):
+        pairs = []
+        current = self.head
+        while current != None:
+            pairs.append((current.key, current.data))
+            current = current.next
+        return pairs
+
     # Returns True if the list is empty
     def is_empty(self):
         return self.head == None and self.tail == None
@@ -81,7 +90,12 @@ class HashTable:
     values = []
     table = []
 
+    entries = 0
+    buckets = 0
+    critical_point  = 0.667
+
     def __init__ (self, size):
+        self.buckets = size
         for i in range(size):
             self.table.append(LinkedList())
 
@@ -92,6 +106,12 @@ class HashTable:
         self.table[index].append(node)
         self.keys.append(key)
         self.values.append(value)
+        self.entries += 1
+
+        # Calculates load factor. Calls rehash if necessary
+        load_factor = float(self.entries) / float(self.buckets)
+        if load_factor > self.critical_point:
+            self.rehash()
 
     # Table[key] -> Value
     def get(self, key):
@@ -130,22 +150,43 @@ class HashTable:
                 sys.stdout.write("[{}]: ".format(index))
                 self.table[index].print_list()
 
-        print()
+        print('\n')
+
+    # Called when load factor exceeds critical value
+    def rehash(self):
+        new_size = self.buckets * 2
+        new_table = []
+        # Reset table
+        self.keys = []
+        self.values = []
+        self.entries = 0
+        self.buckets = new_size
+        # Create new table
+        for i in range(new_size):
+            new_table.append(LinkedList())
+        # Set new table
+        temp_table = self.table
+        self.table = new_table
+        for list in temp_table:
+            for pair in list.get_values():
+                self.set(pair[0], pair[1])
 
 
 if __name__ == '__main__':
 
     f = lambda data: data > 10
 
-    table = HashTable(50)
+    table = HashTable(5)
     table.set("Apples", 5)
     table.set("Bananas", 7)
+    table.print_table()
     table.set("Cherries", 13)
     table.set("Dates", 17)
     table.set("Fruits", "Vegetables")
-
+    table.print_table()
     print(table.get_keys())
     print(table.get_values())
-    table.print_table()
-    table.update("Fruits", "Not Vegetables")
-    table.print_table()
+
+    #table.print_table()
+    #table.update("Fruits", "Not Vegetables")
+    #table.print_table()
