@@ -6,3 +6,6 @@ red
 fish
 blue
 fish
+apple
+crab
+stupid

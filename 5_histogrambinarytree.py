@@ -15,7 +15,7 @@ class Node:
 
 # Class for the binary search tree
 class BinaryTree:
-    head = None
+    root = None
 
     # Performs a depth first pre order traversal on the tree, and prints elements
     def in_order(self, root):
@@ -28,12 +28,28 @@ class BinaryTree:
 
         self.in_order(root.right)
 
+
+    def BFS(self, root):
+        queue = []
+        if root == None:
+            return
+        queue.append(root)
+        while len(queue) != 0:
+            node = queue.pop(0)
+            sys.stdout.write(" {}".format(node.word))
+            if node.left != None:
+                queue.append(node.left)
+            if node.right != None:
+                queue.append(node.right)
+
+
+        print()
     # Inserts a node into the tree. If word already present, increase the frequency
     def insert_node(self, node):
-        if self.head == None:
-            self.head = node
+        if self.root == None:
+            self.root = node
         else:
-            current = self.head
+            current = self.root
             list = ["", ""]
             while current != None:
                 parent = current
@@ -63,7 +79,7 @@ class BinaryTree:
                         parent.right = node
 
     def frequency(self, word):
-        current = self.head
+        current = self.root
 
         while current != None:
             if current.word == word:
@@ -115,7 +131,7 @@ if __name__ == "__main__":
         word = sys.argv[2]
 
     histogram = histogram(source_text)
-    
+    #histogram.BFS(histogram.root)
     time_start = time.clock()
     for i in range(trials):
         if i == 99:
