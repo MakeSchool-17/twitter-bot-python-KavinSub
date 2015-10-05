@@ -1,7 +1,7 @@
 import sys
 import re
 
-regex_string = "[-()*_]"
+regex_string = "[/\\*_]"
 # "^A-z0-9\',.\"/\n?!;:"
 def parse(filename, new_file):
     # Get file text

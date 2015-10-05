@@ -97,22 +97,21 @@ class HashTable:
         for i in range(size):
             self.table.append(LinkedList())
 
-    # Adds a new Key: Value pair to the hash table
+    # Adds a new Key: Value pair to the hash table. Return False if unable to set
     def set(self, key, value):
         # Exit function if key already exists
         if self.contains(key) == True:
-            print("{} already exists in table.".format(key))
-            return
+            return False
         node = Node(key, value)
         index = self.hash(key)
         self.table[index].append(node)
         self.entries += 1
-
         # Calculates load factor. Calls rehash if necessary
         load_factor = float(self.entries) / float(self.buckets)
         if load_factor > self.critical_point:
             self.rehash()
-
+        return True
+        
     # Table[key] -> Value
     def get(self, key):
         index = self.hash(key)
