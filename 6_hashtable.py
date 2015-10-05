@@ -86,8 +86,6 @@ class LinkedList:
         return self.head == None and self.tail == None
 
 class HashTable:
-    keys = []
-    values = []
     table = []
 
     entries = 0
@@ -101,11 +99,13 @@ class HashTable:
 
     # Adds a new Key: Value pair to the hash table
     def set(self, key, value):
+        # Exit function if key already exists
+        if self.contains(key) == True:
+            print("{} already exists in table.".format(key))
+            return
         node = Node(key, value)
         index = self.hash(key)
         self.table[index].append(node)
-        self.keys.append(key)
-        self.values.append(value)
         self.entries += 1
 
         # Calculates load factor. Calls rehash if necessary
@@ -131,13 +131,27 @@ class HashTable:
             return "Unable to find key: {}".format(key)
         node.data = new_val
 
+    def get_pairs(self):
+        pairs = []
+        for list in self.table:
+            pairs += list.get_values()
+        return pairs
+
     # Returns a key list
     def get_keys(self):
-        return self.keys
+        pairs = self.get_pairs()
+        keys = []
+        for pair in pairs:
+            keys.append(pair[0])
+        return keys
 
     # Returns a list of values
     def get_values(self):
-        return self.values
+        pairs = self.get_pairs()
+        values = []
+        for pair in pairs:
+            values.append(pair[1])
+        return values
 
     # Hash function that makes use of built in hash function
     def hash(self, key):
@@ -149,8 +163,17 @@ class HashTable:
             if not self.table[index].is_empty():
                 sys.stdout.write("[{}]: ".format(index))
                 self.table[index].print_list()
-
         print('\n')
+
+    # Returns true if the table contains the provided key
+    def contains(self, key):
+        index = self.hash(key)
+        linked_list = self.table[index]
+        pairs = linked_list.get_values()
+        for pair in pairs:
+            if pair[0] == key:
+                return True
+        return False
 
     # Called when load factor exceeds critical value
     def rehash(self):
@@ -179,11 +202,11 @@ if __name__ == '__main__':
     table = HashTable(5)
     table.set("Apples", 5)
     table.set("Bananas", 7)
-    table.print_table()
     table.set("Cherries", 13)
     table.set("Dates", 17)
     table.set("Fruits", "Vegetables")
     table.print_table()
+    print(table.get_pairs())
     print(table.get_keys())
     print(table.get_values())
 
