@@ -1,6 +1,7 @@
 import re
 import sys
 import hashtable_6
+import heap_10
 
 #regex_string = '(\".+\"|[^\s]+)'
 regex_string = '[^\s\";:]+'
@@ -12,13 +13,36 @@ def tokenizer(source_text):
     tokens = re.findall(regex_string, raw_text)
     return tokens
 
+# Creates a hashtable histogram using tokenizer
+def hash_histogram(tokens, size):
+    hashtable = hashtable_6.HashTable(size)
+    for token in tokens:
+        if hashtable.set(token, 1) == False:
+            hashtable.update(token, hashtable.get(token) + 1)
+    return hashtable
+
+# Creates a heap histogram using a hashtable
+def heap_histogram(hashtable):
+    pairs = hashtable.get_pairs()
+    heap = heap_10.Heap()
+    for pair in pairs:
+        heap.insert(pair[1], pair[0])
+    return heap
+
 if __name__ == '__main__':
     source_text = "text_files/" + sys.argv[1]
 
     tokens = tokenizer(source_text)
-    hashtable = hashtable_6.HashTable(500)
-    for token in tokens:
-        if hashtable.set(token, 1) == False:
-            hashtable.update(token, hashtable.get(token) + 1)
+    hashtable = hash_histogram(tokens, 500)
+    print(hashtable.buckets)
+
+    heap = heap_histogram(hashtable)
+    print(heap.peek())
+    heap.delete_max()
+    print(heap.peek())
+    heap.delete_max()
+    print(heap.peek())
+    heap.delete_max()
+    print(heap.peek())
     #print(hashtable.get_pairs()[0:100])
     #print(len(hashtable.get_keys()))
