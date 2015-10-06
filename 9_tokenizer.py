@@ -37,12 +37,6 @@ if __name__ == '__main__':
     print(hashtable.buckets)
 
     heap = heap_histogram(hashtable)
-    print(heap.peek())
-    heap.delete_max()
-    print(heap.peek())
-    heap.delete_max()
-    print(heap.peek())
-    heap.delete_max()
-    print(heap.peek())
+    print(heap.get_top(5))
     #print(hashtable.get_pairs()[0:100])
     #print(len(hashtable.get_keys()))

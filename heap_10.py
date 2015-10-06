@@ -34,6 +34,7 @@ class Heap:
 
     # Deletes the max value (The root)
     def delete_max(self):
+        max_node = self.heap[1]
         self.heap[1] = None
         # Compares the left and right children of the root, and does this for all levels
         k = 1
@@ -65,6 +66,7 @@ class Heap:
             elif self.heap[k] == None:
                 self.heap.pop(k)
                 break
+        return max_node
 
     # Helper methods return true if _child exists
     def has_right(self, k):
@@ -78,6 +80,14 @@ class Heap:
         return self.heap[2 * k + 1]
     def get_left(self, k):
         return self.heap[2 * k]
+
+    # Returns a list of the n most common words
+    def get_top(self, n):
+        top = []
+        for i in range(n):
+            top.append(self.delete_max())
+        return top
+
 if __name__ == '__main__':
     heap = Heap()
     heap.insert(1, "fat")
