@@ -4,13 +4,14 @@ import time
 
 # Node class
 class Node:
-    data = 0
-    key = None
-    next = None
+    #data = 0
+    #key = None
+    #next = None
 
     def __init__(self, key, data):
         self.key = key
         self.data = data
+        self.next = None
 
     #def __init__(self, data):
         #self.data = data
@@ -20,6 +21,13 @@ class LinkedList:
     head = None
     tail = None
 
+    def __str__(self):
+        pairs = self.get_values()
+        string = "[Head -> "
+        for pair in pairs:
+            string += "({}, {}) -> ".format(pair[0], pair[1])
+        string += "None]"
+        return string
     # Adds a node to the end of a list
     def append(self, node):
 
@@ -111,16 +119,23 @@ class HashTable:
         if load_factor > self.critical_point:
             self.rehash()
         return True
-        
+
     # Table[key] -> Value
     def get(self, key):
         index = self.hash(key)
         linked = self.table[index]
         node = linked.find(lambda k: k == key)
         if node == None:
-            return "Unable to find key: {}".format(key)
+            return None
         return node.data
-
+    # Gets the node itself
+    def get_node(self, key):
+        index = self.hash(key)
+        linked = self.table[index]
+        node = linked.find(lambda k: k == key)
+        if node == None:
+            return None
+        return node
     # Updates an existing entry in the hashtable
     def update(self, key, new_val):
         index = self.hash(key)

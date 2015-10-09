@@ -34,9 +34,9 @@ if __name__ == '__main__':
 
     tokens = tokenizer(source_text)
     hashtable = hash_histogram(tokens, 500)
-    print(hashtable.buckets)
+    print(hashtable.get_pairs())
 
-    heap = heap_histogram(hashtable)
-    print(heap.get_top(5))
+    #heap = heap_histogram(hashtable)
+    #print(heap.get_top(5))
     #print(hashtable.get_pairs()[0:100])
     #print(len(hashtable.get_keys()))
